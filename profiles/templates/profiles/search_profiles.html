@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Search Profiles</h2>
+
+<div class="search-form"> 
+
+<form method="GET" action="{% url 'search_profiles' %}" >
+    <input type="text" name="q" placeholder="Search by Name, Email, or Phone" value="{{ query }}" required>
+</form>
+<button type="submit">Search</button>
+
+</div>
+<div class="container">
+
+<table  class="profile-table">
+    
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Uploaded At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    {% if query %}
+        {% if profiles %}
+            <tbody>
+                {% for profile in profiles %}
+                    <tr>
+                        <td>{{ profile.name }}</td>
+                        <td>{{ profile.email }}</td>
+                        <td>{{ profile.phone }}</td>
+                        <td>{{ profile.uploaded_at|date:"Y-m-d H:i" }}</td>
+                        <td><a href="{% url 'review_profile' profile.id %}">View</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+    {% else %}
+        <p>No results found for "{{ query }}".</p>
+    {% endif %}
+    {% endif %}
+</table>
+</div>
+
+{% endblock %}

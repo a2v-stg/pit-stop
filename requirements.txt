@@ -1,0 +1,21 @@
+Django>=4.2,<4.3
+gunicorn
+whitenoise  # Static file management
+
+# Resume Parsing & Processing
+pymupdf  # PDF processing
+spacy==3.5.2  # NLP processing
+pdfminer.six  # Alternative PDF text extraction
+
+# Summarization & AI-based Analysis
+transformers  # Hugging Face models for summarization
+
+# Other Utilities
+python-dotenv  # Environment variable management
+django-crispy-forms  # Better form styling
+crispy-bootstrap5  # Bootstrap 5 integration for forms
+
+# Security & Deployment
+django-storages  # Storage for media files (e.g., S3)
+boto3  # AWS SDK for file storage
+

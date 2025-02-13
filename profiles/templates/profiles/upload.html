@@ -1,0 +1,32 @@
+<!-- templates/pitstops/upload.html -->
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="page-title">Upload Profile</h2>
+
+<div class="container">
+    <!-- Left side: File Upload Form -->
+    <div class="upload-form">
+        <h3>Select and Upload a Profile</h3>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="profile">Profile:</label>
+                <input type="file" name="file" required>
+            </div>
+            <button type="submit" class="submit-btn">Upload Profile</button>
+        </form>
+    </div>
+
+    <!-- Right side: Instructions or Additional Information -->
+    <div class="form-data">
+        <h3>Instructions</h3>
+        <ul>
+            <li>Go ahead and upload the document.</li>
+            <li>System will extract relevant data for further processing.</li>
+            <li>After upload, you will be taken to a review page where you can review and edit extracted data</li>
+            <li>Ensure to provide a initial grading of the profile</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
