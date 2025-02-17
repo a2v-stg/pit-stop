@@ -11,8 +11,12 @@
                 <th>Candidate Name</th>
                 <th>Candidate Phone</th>
                 <th>Candidate Email</th>
-                <th>LinkedIn URL</th>
-                <th>Profile</th>
+                <th>Reviewed</th>
+                <th>Contacted</th>
+                <th>Scheduled</th>
+                {% comment %}<th>LinkedIn </th>
+                 <th>Profile</th> {% endcomment %}
+                 <th>Team Fitment</th>
                 <th>Fitment</th>
                 <th>Actions</th>
             </tr>
@@ -24,14 +28,39 @@
                 <td>{{ profile.name }}</td>
                 <td>{{ profile.phone }}</td>
                 <td>{{ profile.email }}</td>
-                <td><a href="{{ profile.profile_url }}">Link</td>
-                <td><a href="{{ profile.file.url }}" target="_blank">View Document</a></td>
+                
+                <td>
+                    {% if profile.profile_reviewed %}
+                        <span class="text-success">✔ </span>
+                    {% else %}
+                        <span class="text-danger">✘ </span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if profile.profile_contacted %}
+                    <span class="text-success">✔ </span>
+                    {% else %}
+                        <span class="text-danger">✘ </span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if profile.profile_interview_scheduled  %}
+                    <span class="text-success">✔ </span>
+                    {% else %}
+                        <span class="text-danger">✘ </span>                  
+                    {% endif %}
+                </td>
+                <td>{{ profile.profile_for_team }}</td>
+                {% comment %}<td><a href="{{ profile.profile_url }}">Link</td>
+                 <td><a href="{{ profile.file.url }}" target="_blank">View Document</a></td> {% endcomment %}
                 <td>
                     <span class="fitment-badge {{ profile.get_fitment_analysis_display|lower }}">{{ profile.get_fitment_analysis_display }}</span>
                 </td>
                 <td>
-                    <a href="{% url 'review_profile' profile.id %}" class="btn view">Edit Info</a>
-                    <a href="{% url 'interview_feedback' profile.id %}" class="btn edit">Feedback</a>
+                    <a href="{% url 'view_profile' profile.id %}" class="btn view">View Info</a>
+                    <a href="{% url 'review_profile' profile.id %}" class="btn edit">Edit Info</a>
+                    <a href="{% url 'interview_feedback' profile.id %}" class="btn feedback">Add Feedback</a>
+                    <a href="{{ profile.profile_url }}" target="_blank" class="btn link">Link</a>
                 </td>
             </tr>
             {% empty %}

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import sqlite3
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +27,7 @@ SECRET_KEY = "django-insecure-ow!jw0v(&ej@+rxtmx#1ns)nw#u)27dnt9hqr^bxqm$r8stwzb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = ["127.0.0.1","localhost","3.14.92.222"]
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 CSP_DEFAULT_SRC = ("'self'",)

@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Profile, InterviewFeedback
-from .forms import ProfileUploadForm, InterviewFeedbackForm, ProfileEditForm
+from .forms import ProfileUploadForm, InterviewFeedbackForm, ProfileEditForm, ProfileViewForm
 from .utils import process_profile
+
 
 def upload_profile(request):
     if request.method == "POST":
@@ -17,18 +18,18 @@ def upload_profile(request):
         form = ProfileUploadForm()
     return render(request, "profiles/upload.html", {"form": form})
 
+
 def list_profiles(request):
     profiles = Profile.objects.all()
     return render(request, "profiles/list.html", {"profiles": profiles})
+
 
 def interview_feedback(request, profile_id):
     profile = get_object_or_404(Profile, id=profile_id)
     if request.method == "POST":
         form = InterviewFeedbackForm(request.POST)
-        print(form)
 
         if form.is_valid():
-            print(form)
             feedback = form.save(commit=False)
             feedback.profile = profile
             feedback.save()
@@ -36,6 +37,7 @@ def interview_feedback(request, profile_id):
     else:
         form = InterviewFeedbackForm()
     return render(request, "profiles/feedback.html", {"form": form, "profile": profile})
+
 
 def review_profile(request, profile_id):
     profile = get_object_or_404(Profile, id=profile_id)
@@ -47,6 +49,13 @@ def review_profile(request, profile_id):
     else:
         form = ProfileEditForm(instance=profile)
     return render(request, "profiles/review.html", {"form": form, "profile": profile})
+
+
+def view_profile(request, profile_id):
+    profile = get_object_or_404(Profile, id=profile_id)
+    form = ProfileViewForm(instance=profile)
+    return render(request, "profiles/view.html", {"form": form, "profile": profile})
+
 
 def search_profiles(request):
     query = request.GET.get("q", "").strip()
@@ -62,4 +71,3 @@ def search_profiles(request):
         )
 
     return render(request, "profiles/search_profiles.html", {"profiles": profiles, "query": query})
-

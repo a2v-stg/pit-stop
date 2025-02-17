@@ -1,5 +1,6 @@
 Django>=4.2,<4.3
 gunicorn
+psycopg2-binary  # PostgreSQL database adapter
 whitenoise  # Static file management
 
 # Resume Parsing & Processing
@@ -8,6 +9,7 @@ spacy==3.5.2  # NLP processing
 pdfminer.six  # Alternative PDF text extraction
 
 # Summarization & AI-based Analysis
+tensorflow
 transformers  # Hugging Face models for summarization
 
 # Other Utilities
