@@ -13,7 +13,7 @@
                 <th>Candidate Email</th>
                 <th>Reviewed</th>
                 <th>Contacted</th>
-                <th>Scheduled</th>
+                <th>Interview Scheduled</th>
                 {% comment %}<th>LinkedIn </th>
                  <th>Profile</th> {% endcomment %}
                  <th>Team Fitment</th>
@@ -25,7 +25,12 @@
             {% for profile in profiles %}
             <tr>
                 <td>{{ profile.id }}</td>
-                <td>{{ profile.name }}</td>
+                <td>{% if  profile.profile_url%}
+                <a href="{{ profile.profile_url }}" target="_blank">{{ profile.name }}</a>
+                {% else %}
+                {{ profile.name }}
+                {% endif%}
+                </td>
                 <td>{{ profile.phone }}</td>
                 <td>{{ profile.email }}</td>
                 
@@ -50,17 +55,16 @@
                         <span class="text-danger">✘ </span>                  
                     {% endif %}
                 </td>
-                <td>{{ profile.profile_for_team }}</td>
+                <td>{{ profile.get_profile_for_team_display }}</td>
                 {% comment %}<td><a href="{{ profile.profile_url }}">Link</td>
                  <td><a href="{{ profile.file.url }}" target="_blank">View Document</a></td> {% endcomment %}
                 <td>
                     <span class="fitment-badge {{ profile.get_fitment_analysis_display|lower }}">{{ profile.get_fitment_analysis_display }}</span>
                 </td>
                 <td>
-                    <a href="{% url 'view_profile' profile.id %}" class="btn view">View Info</a>
-                    <a href="{% url 'review_profile' profile.id %}" class="btn edit">Edit Info</a>
-                    <a href="{% url 'interview_feedback' profile.id %}" class="btn feedback">Add Feedback</a>
-                    <a href="{{ profile.profile_url }}" target="_blank" class="btn link">Link</a>
+                    <a href="{% url 'view_profile' profile.id %}" class="btn view">View</a>
+                    <a href="{% url 'review_profile' profile.id %}" class="btn edit">Edit</a>
+                    <a href="{% url 'interview_feedback' profile.id %}" class="btn rate">Rate</a>
                 </td>
             </tr>
             {% empty %}

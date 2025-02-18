@@ -40,7 +40,7 @@ class Profile(models.Model):
     interview_date = models.DateTimeField(null=True, blank=True)
     profile_for_team = models.CharField(
         max_length=20, choices=TEAM_CHOICES, null=True, blank=True)
-
+    experience = models.IntegerField(null=True, blank=True)
     def __str__(self):
         return self.name if self.name else "Profile"
 
