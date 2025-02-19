@@ -11,7 +11,8 @@
 <body>
     
     <div class="sidebar">
-        <h2>Let's Simplify Hiring</h2>
+        <h2>Pit-Stop<h2>
+        <h4>Let's Simplify Hiring</h4>
         <ul>
             <li><a href="{% url 'list_profiles' %}"><i class="fas fa-list"></i> Profiles</a></li>
             <li><a href="{% url 'upload_profile' %}"><i class="fas fa-upload"></i> Upload Profile</a></li>
@@ -45,7 +46,6 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-
 }
 /* Global Reset */
 * {
@@ -53,7 +53,6 @@ body {
     padding: 0;
     box-sizing: border-box;
 }
-
 
 /* Sidebar */
 .sidebar {
@@ -71,6 +70,11 @@ body {
     text-align: center;
     margin-bottom: 20px;
     font-size: 22px;
+}
+.sidebar h4 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 12px;
 }
 
 .sidebar ul {
@@ -94,6 +98,7 @@ body {
 
 .sidebar ul li a:hover {
     background: #0056b3;
+    color: white;
 }
 .sidebar ul li a i {
     margin-right: 10px; /* Space between icon and text */
@@ -119,92 +124,6 @@ body {
 .preview, .extracted-data, .upload-form, .instructions, .feedback-form {
     flex: 1;
     max-width: 48%;
-}
-
-
-
-/* Profile Table */
-.profile-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    margin-bottom: 30px
-}
-
-.profile-table th,
-.profile-table td {
-    padding: 6px;
-    border: 1px solid #ddd;
-    text-align: center;
-    font-size: 13px;
-}
-
-.profile-table th {
-    background-color:#0056b3;
-    color: white;
-}
-
-.profile-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.profile-table tr:last-child(even) {
-    background-color: #f9f9f9;
-   
-}
-
-
-/* Fitment Badge */
-.fitment-badge {
-    padding: 2px 4px;
-    border-radius: 4px;
-    color: white;
-    text-decoration: none;
-    font-size: 12px;
-    display: inline-block;
-    margin: 1px;
-}
-
-.fitment-badge.good {
-    background-color: #28a745;
-}
-
-.fitment-badge.maybe {
-    background-color:rgb(255, 168, 7);
-}
-
-.fitment-badge.bad {
-    background-color: #dc3545;
-}
-
-/* Action Buttons */
-.btn {
-    padding: 6px 6px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 12px;
-    display: inline-block;
-    margin: 2px;
-}
-
-.btn.view {
-    background-color:rgb(25, 81, 45);
-    color: white;
-}
-
-.btn.edit {
-    background-color:rgb(177, 125, 53);
-    color: black;
-}
-
-.btn.rate {
-    background-color:rgb(6, 57, 82);
-    color: white;
-}
-
-.btn.link {
-    background-color:rgb(106, 69, 81);
-    color: white;
 }
 
 .upload-form {
@@ -382,7 +301,83 @@ ul {
 ul li {
     margin: 15px 0;
 }
+.profile-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-size: 11px;
+}
 
+.profile-table th, 
+.profile-table td {
+    padding: 6px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 13px;
+}
+
+.profile-table th {
+    background-color:#0056b4;
+    color: white;
+}
+
+.profile-table tr:nth-child(even) {
+    background-color:rgb(240, 238, 238);
+}
+
+/* Fitment Badge */
+.fitment-badge {
+    padding: 2px 4px;
+    border-radius: 4px;
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+    display: inline-block;
+    margin: 1px;
+}
+
+.fitment-badge.good {
+    background-color:rgb(41, 122, 60);
+}
+
+.fitment-badge.maybe {
+    background-color:rgb(165, 110, 9);
+}
+
+.fitment-badge.bad {
+    background-color: #dc3545;
+}
+
+/* Action Buttons */
+.btn {
+    padding: 6px 6px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.btn.view {
+    background-color:rgb(25, 81, 45);
+    color: white;
+}
+
+.btn.edit {
+    background-color:rgb(25, 61, 88);
+    color: white;
+}
+
+.btn.rate {
+    background-color:rgb(103, 31, 18);
+    color: white;
+}
+
+.btn.filter {
+    background-color:rgb(176, 172, 173);
+    color: black;
+    width:100%;
+}
 .text-success {
     color:#388e3c
 }
@@ -390,5 +385,27 @@ ul li {
 .text-danger {
     color:#dc3545
 }
+
+
+/* Collapsible Filter Button */
+.btn-outline-primary {
+    font-weight: 500;
+    border-radius: 6px;
+}
+
+.profile-table th.list-filter {
+    background-color:#f8f9fa;
+}
+/* Style inputs and selects */
+.list-filter input,
+.list-filter select {
+    width: 100%;
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color:rgb(212, 215, 218);
+    background: #f8f9fa;: 
+}
+
 </style>
 </html>

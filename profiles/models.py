@@ -17,7 +17,15 @@ TEAM_CHOICES = [
     ("automation", "Automation"),
     ("machine_learning", "Deep Tech")
 ]
-
+DECISION_CHOICES = [
+    ("selected", "Selected"),
+    ("rejected", "Rejected"),
+    ("shortlist", "Shortlisted"),
+    ("forward", "Forwarded to next round"),
+    ("not_interested","Candidate Not Interested"),
+    ("no_decision","Not Decided"),
+    ("scheduled","Interview Scheduled")
+]
 
 class Profile(models.Model):
     """
@@ -39,18 +47,17 @@ class Profile(models.Model):
     interview_scheduled = models.BooleanField(default=False)
     interview_date = models.DateTimeField(null=True, blank=True)
     profile_for_team = models.CharField(
-        max_length=20, choices=TEAM_CHOICES, null=True, blank=True)
+    max_length=20, choices=TEAM_CHOICES, null=True, blank=True)
     experience = models.IntegerField(null=True, blank=True)
+    decision = models.CharField(max_length=200, blank=True, null=True, default="no_decision", choices=DECISION_CHOICES)
+
     def __str__(self):
         return self.name if self.name else "Profile"
 
 
 class InterviewFeedback(models.Model):
     DECISION_CHOICES = [
-        ("selected", "Selected"),
-        ("rejected", "Rejected"),
-        ("shortlist", "Shortlist"),
-        ("forward", "Forward to next round")
+        
     ]
     profile = models.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name="feedbacks")

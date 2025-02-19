@@ -3,28 +3,72 @@
 {% block content %} 
     <h2  class="page-title">Uploaded Profiles</h2>
 
-    <div class="container">
-    <table class="profile-table">
+
+<div class="container">
+    <table id="profileTable" class="profile-table">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Candidate Name</th>
                 <th>Candidate Phone</th>
                 <th>Candidate Email</th>
                 <th>Reviewed</th>
                 <th>Contacted</th>
-                <th>Interview Scheduled</th>
-                {% comment %}<th>LinkedIn </th>
-                 <th>Profile</th> {% endcomment %}
-                 <th>Team Fitment</th>
+                <th>Scheduled</th>
+                <th>Team</th>
                 <th>Fitment</th>
-                <th>Actions</th>
+                <th>Decision</th>
+                <th>Actions </th> 
+            </tr>
+            <tr class="list-filter">
+                    <th class="list-filter">
+                        <input type="text" id="filterName" class="form-control filter-input" data-column="0" placeholder="Filter Name">
+                    </th>
+                    <th class="list-filter">
+                        <input type="text" id="filterPhone" class="form-control filter-input" data-column="1" placeholder="Filter Phone">
+                    </th>
+                    <th class="list-filter">
+                        <input type="text" id="filterEmail" class="form-control filter-input" data-column="2" placeholder="Filter Email">
+                    </th>
+
+                    <th class="list-filter"> 
+                        <select id="filterReviewed" class="form-select boolean-filter" data-column="3">
+                            <option value="">All</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </th>
+                    <th class="list-filter">
+                        <select id="filterContacted"  class="form-select boolean-filter" data-column="4">
+                            <option value="">All</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </th>
+                    <th class="list-filter">
+                        <select id="filterScheduled" class="form-select boolean-filter" data-column="5">
+                            <option value="">All</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </th>
+                    <th class="list-filter">
+                        <input id="filterTeam" type="text" class="form-control filter-input" data-column="6" placeholder="Filter Team">
+                    </th>               
+                    <th class="list-filter">
+                        <input id="filterFitment" type="text" class="form-control filter-input" data-column="7" placeholder="Filter Fitment">
+                    </th>
+                    <th class="list-filter">
+                        <input id="filterDecision" type="text" class="form-control filter-input" data-column="8" placeholder="Filter Decision">
+                    </th>
+                    <th class="list-filter">
+                        <button id="clearFilters" class="btn filter">Clear Filter</button> 
+                    </th>
             </tr>
         </thead>
+        
         <tbody>
             {% for profile in profiles %}
             <tr>
-                <td>{{ profile.id }}</td>
                 <td>{% if  profile.profile_url%}
                 <a href="{{ profile.profile_url }}" target="_blank">{{ profile.name }}</a>
                 {% else %}
@@ -33,34 +77,16 @@
                 </td>
                 <td>{{ profile.phone }}</td>
                 <td>{{ profile.email }}</td>
-                
-                <td>
-                    {% if profile.profile_reviewed %}
-                        <span class="text-success">✔ </span>
-                    {% else %}
-                        <span class="text-danger">✘ </span>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if profile.profile_contacted %}
-                    <span class="text-success">✔ </span>
-                    {% else %}
-                        <span class="text-danger">✘ </span>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if profile.profile_interview_scheduled  %}
-                    <span class="text-success">✔ </span>
-                    {% else %}
-                        <span class="text-danger">✘ </span>                  
-                    {% endif %}
-                </td>
+                <td>{{ profile.profile_reviewed|yesno:"Yes,No" }}</td>
+                <td>{{ profile.profile_contacted|yesno:"Yes,No" }}</td>
+                <td>{{ profile.profile_interview_scheduled|yesno:"Yes,No" }}</td>
                 <td>{{ profile.get_profile_for_team_display }}</td>
                 {% comment %}<td><a href="{{ profile.profile_url }}">Link</td>
                  <td><a href="{{ profile.file.url }}" target="_blank">View Document</a></td> {% endcomment %}
                 <td>
                     <span class="fitment-badge {{ profile.get_fitment_analysis_display|lower }}">{{ profile.get_fitment_analysis_display }}</span>
                 </td>
+                <td>{{ profile.get_decision_display }}</td>
                 <td>
                     <a href="{% url 'view_profile' profile.id %}" class="btn view">View</a>
                     <a href="{% url 'review_profile' profile.id %}" class="btn edit">Edit</a>
@@ -74,5 +100,86 @@
             {% endfor %}
         </tbody>
     </table>
-    </div>
+</div>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        var table = $('#profileTable').DataTable({
+            searching: true,
+            paging: true,
+            ordering: false,
+            info: true,
+            autoWidth: true,
+            layout: {
+                topEnd: "search"
+            },
+            initComplete: function () {
+                this.api().columns().every(function () {
+                    var that = this;
+                    $('input', this.header()).on('keyup change', function () {
+                        if (that.search() !== this.value) {
+                            that.search(this.value).draw();
+                        }
+                    });
+                });
+
+                // Dropdown search for boolean fields
+                $('.boolean-filter').on('change', function () {
+                    var columnIndex = $(this).closest('th').index();
+                    var searchValue = $(this).val();
+                    if (searchValue === "Yes") {
+                        table.column(columnIndex).search("^Yes$", true, false).draw();
+                    } else if (searchValue === "No") {
+                        table.column(columnIndex).search("^No$", true, false).draw();
+                    } else {
+                        table.column(columnIndex).search("").draw();
+                    }
+                });
+            }
+        });
+        $(".dataTables_filter, .dataTables_length, .dataTables_info, .dataTables_paginate").css({
+            display: "flex",
+            alignItems: "center",
+            gap: "20px",
+            fontSize: "12px"
+        });
+        $(".dataTables_filter").append(`
+        <div class="form-check form-switch ms-3">
+            <input class="form-check-input" type="checkbox" id="toggleFilters">
+            <label class="form-check-label" for="toggleFilters">Additional Filters</label>
+        </div>
+        `);
+        $(".dataTables_length").appendTo(".dataTables_filter");
+        $(document).on("change", "#toggleFilters", function () {
+            $(".list-filter").toggle(this.checked);
+        });
+        $("#toggleFilters").click(function () {
+            $(".list-filter").toggle(); 
+        });
+        $('#clearFilters').on('click', function () {
+            $('#filterName, #filterEmail, #filterPhone').val('');
+            $('#filterReviewed, #filterContacted, #filterScheduled').val('');
+            $('#filterTeam, #filterFitment, #filterDecision').val('');
+            table.search('').columns().search('').draw();
+        });
+        table.columns().every(function () {
+                var column = this;
+                $('input', this.header()).on('keyup change clear', function () {
+                    if (column.search() !== this.value) {
+                        column.search(this.value).draw(); 
+                    }
+                });
+            });
+        // default hiding the filter here instead of CSS as that is causing alignment issues
+        $(".list-filter").toggle(); 
+        
+    });
+
+</script>
+
+
 {% endblock %}
